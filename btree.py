@@ -68,10 +68,20 @@ class BTree:
 
     def _search(self, node, key):
         i = 0
+        print(f"Searching for key: {key} in node with keys: {node.keys}")
         while i < len(node.keys) and key > node.keys[i]:
             i += 1
+
+        # Verifica se a chave foi encontrada
         if i < len(node.keys) and key == node.keys[i]:
             return node.addresses[i]  # Retorna o endereço associado
+
+        # Se o nó for folha e não encontramos a chave, retornamos None
         if node.is_leaf:
             return None
-        return self._search(node.children[i], key)
+
+        # Antes de tentar acessar node.children[i], verificamos se i está dentro do intervalo
+        if i < len(node.children):  # Verifica se há filhos para descer
+            return self._search(node.children[i], key)
+        else:
+            return None  # Caso não haja filho para descer
