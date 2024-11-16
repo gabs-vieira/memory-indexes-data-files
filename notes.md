@@ -28,6 +28,7 @@
     - Btree
     - File
 
+- [] Tratamento de erros nas queries caso nao encontre o resultado
 
 ---
 

@@ -21,7 +21,11 @@ def display_results_table(results):
     headers = ["Funcionalidade", "Método", "ID Produto", "Tempo (s)"]
     print(f"{headers[0]:<20} {headers[1]:<15} {headers[2]:<15} {headers[3]:<15}")
     for row in results:
-        print(f"{row[0]:<20} {row[1]:<15} {row[2]:<15} {row[3]:<15.6f}")
+        if isinstance(row[3], (int, float)):
+            tempo = f"{row[3]:<15.6f}"
+        else:
+            tempo = f"{row[3]:<15}"
+        print(f"{row[0]:<20} {row[1]:<15} {row[2]:<15} {tempo}")
 
 
 def save_to_csv(filename, headers, data):
@@ -37,11 +41,6 @@ def main():
     print("\nLoading products...")
     products = load_products()
     print("Done.")
-
-    # print("\nCreating indexes in memory...")
-    # btree, index_btree_time = measure_index_creation(load_btree, products)
-    # hash_table, index_hash_time = measure_index_creation(load_hash, products)
-    # print("Done.")
 
     # product_ids = [26022534, 17300016, 1005115, 5100503, 4804194]
 
@@ -68,29 +67,39 @@ def main():
 
         elif choice == "2":
             product_id = int(input("Digite o ID do produto para consultar: "))
-            _, file_time = measure_execution_time(query_in_file, product_id)
-            _, btree_time = (
-                measure_execution_time(query_btree, btree, product_id)
-                if btree
-                else (None, None)
-            )
-            _, hash_time = (
-                measure_execution_time(query_hash_table, hash_table, product_id)
-                if hash_table
-                else (None, None)
-            )
 
-            results.append(["Query", "File", product_id, file_time])
-            if btree_time is not None:
-                results.append(["Query", "BTree", product_id, btree_time])
-            if hash_time is not None:
-                results.append(["Query", "HashTable", product_id, hash_time])
+            # File Query
+            result_file, file_time = measure_execution_time(query_in_file, product_id)
+            if result_file is None:
+                print("Produto não encontrado no arquivo.")
+                results.append(["Query-error", "File", product_id, "Erro"])
+            else:
+                results.append(["Query", "File", product_id, file_time])
+                print(f"Query time in File: {file_time:.6f} seconds.")
 
-            print(f"Query time in File: {file_time:.6f} seconds.")
-            if btree_time is not None:
-                print(f"Query time in BTree: {btree_time:.6f} seconds.")
-            if hash_time is not None:
-                print(f"Query time in HashTable: {hash_time:.6f} seconds.")
+            # BTree Query
+            if btree is not None:
+                result_btree, btree_time = measure_execution_time(
+                    query_btree, btree, product_id
+                )
+                if result_btree is None:
+                    print("Produto não encontrado na BTree.")
+                    results.append(["Query-error", "BTree", product_id, "Erro"])
+                else:
+                    results.append(["Query", "BTree", product_id, btree_time])
+                    print(f"Query time in BTree: {btree_time:.6f} seconds.")
+
+            # Hash Table Query
+            if hash_table is not None:
+                result_hash, hash_time = measure_execution_time(
+                    query_hash_table, hash_table, product_id
+                )
+                if result_hash is None:
+                    print("Produto não encontrado na HashTable.")
+                    results.append(["Query-error", "HashTable", product_id, "Erro"])
+                else:
+                    results.append(["Query", "HashTable", product_id, hash_time])
+                    print(f"Query time in HashTable: {hash_time:.6f} seconds.")
 
         elif choice == "3":
             # TODO: Insert products in btree and hash table
