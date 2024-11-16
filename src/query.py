@@ -6,6 +6,13 @@ from constants import PRODUCT_ENTRY_SIZE, INPUT_PATH
 
 
 # Queries in File
+def query_in_file(product_id: int):
+    with open(INPUT_PATH, "rb") as f:
+        while chunk := f.read(PRODUCT_ENTRY_SIZE):
+            entry = ProductEntry.from_binary(chunk)
+            if entry.product_id == product_id:
+                return entry
+    return None
 
 
 # Queries in Memory

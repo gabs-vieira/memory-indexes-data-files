@@ -13,7 +13,7 @@
   - [ ] Remove
 
 - [ ] Search no arquivo
-- [ ] Implementação de count time
+- [x] Implementação de count time
   - criação de indices (memoria e file)
 
 - [ ] Consultas (5) no arquivo e na memoria
