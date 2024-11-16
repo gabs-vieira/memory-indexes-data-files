@@ -6,6 +6,7 @@ class BTreeNode:
         self.addresses = []  # Endereços no arquivo, usado apenas em folhas
 
 
+# BTree +
 class BTree:
     def __init__(self, order):
         self.root = BTreeNode(is_leaf=True)  # Nó raiz
@@ -88,3 +89,9 @@ class BTree:
 
         # Continua buscando no filho apropriado
         return self._search(node.children[i], key)
+
+    def add_product_btree(btree, product, file_path):
+        with open(file_path, "ab") as f:
+            address = f.tell()
+            f.write(product.to_binary())
+        btree.insert(product.product_id, address)
