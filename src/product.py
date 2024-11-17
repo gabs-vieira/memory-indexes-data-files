@@ -17,6 +17,16 @@ class ProductEntry:
             price=unpacked_data[2],
         )
 
+    def to_binary(self):
+        """
+        Serializa o objeto ProductEntry para uma string binária fixa.
+        """
+        brand_encoded = self.brand.encode("utf-8")[:16]  # Limita a 16 bytes
+        brand_padded = brand_encoded + b"\x00" * (
+            16 - len(brand_encoded)
+        )  # Preenche com '\x00'
+        return struct.pack("q16sf", self.product_id, brand_padded, self.price)
+
     def __repr__(self):
         return (
             f"ProductEntry(product_id={self.product_id}, "

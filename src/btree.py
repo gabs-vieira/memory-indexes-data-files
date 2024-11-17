@@ -1,3 +1,6 @@
+import struct
+
+
 class BTreeNode:
     def __init__(self, is_leaf=False):
         self.is_leaf = is_leaf
@@ -90,8 +93,32 @@ class BTree:
         # Continua buscando no filho apropriado
         return self._search(node.children[i], key)
 
-    def add_product_btree(btree, product, file_path):
-        with open(file_path, "ab") as f:
-            address = f.tell()
-            f.write(product.to_binary())
-        btree.insert(product.product_id, address)
+    def remove(self, key):
+        self._remove_from_node(self.root, key)
+
+    def _remove_from_node(self, node, key):
+        if node.is_leaf:
+            if key in node.keys:
+                index = node.keys.index(key)
+                node.keys.pop(index)
+                node.addresses.pop(index)
+            return
+
+        # Encontre o índice da chave ou do filho
+        for i, k in enumerate(node.keys):
+            if key == k:
+                # Casos de remoção em nós internos
+                if node.children[i].is_leaf:
+                    node.keys[i] = node.children[i].keys.pop(-1)
+                    node.addresses[i] = node.children[i].addresses.pop(-1)
+                else:
+                    node.keys[i] = node.children[i + 1].keys.pop(0)
+                    node.addresses[i] = node.children[i + 1].addresses.pop(0)
+                return
+
+        # Caso recursivo
+        for i, k in enumerate(node.keys):
+            if key < k:
+                self._remove_from_node(node.children[i], key)
+                return
+        self._remove_from_node(node.children[-1], key)

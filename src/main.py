@@ -1,10 +1,6 @@
 import csv
 import time
-from object_management import (
-    load_products,
-    load_btree,
-    load_hash,
-)
+from object_management import *
 from query import *
 
 
@@ -66,6 +62,11 @@ def main():
             print(f"HashTable created in  {hash_time:.6f} seconds.")
 
         elif choice == "2":
+
+            if not (btree and hash_table):
+                print("Os índices precisam ser criados antes de remover produtos.")
+                continue
+
             product_id = int(input("Digite o ID do produto para consultar: "))
 
             # File Query
@@ -102,56 +103,67 @@ def main():
                     print(f"Query time in HashTable: {hash_time:.6f} seconds.")
 
         elif choice == "3":
-            # TODO: Insert products in btree and hash table
-            print("TODO: Insert products in btree and hash table")
-            # new_product = {
-            #     "id": int(input("Digite o ID do novo produto: ")),
-            #     "name": "Novo Produto",
-            #     "price": 10.0,
-            # }
-            # _, btree_time = (
-            #     measure_execution_time(insert_in_btree, btree, new_product)
-            #     if btree
-            #     else (None, None)
-            # )
-            # _, hash_time = (
-            #     measure_execution_time(insert_in_hash, hash_table, new_product)
-            #     if hash_table
-            #     else (None, None)
-            # )
 
-            # if btree_time is not None:
-            #     results.append(
-            #         ["Adicionar Produto", "BTree", new_product["id"], btree_time]
-            #     )
-            #     print(f"Produto adicionado à BTree em {btree_time:.6f} seconds.")
-            # if hash_time is not None:
-            #     results.append(
-            #         ["Adicionar Produto", "HashTable", new_product["id"], hash_time]
-            #     )
-            #     print(f"Produto adicionado à HashTable em {hash_time:.6f} seconds.")
+            # if not (btree and hash_table):
+            #     print("Os índices precisam ser criados antes de remover produtos.")
+            #     continue
+
+            new_product = ProductEntry(
+                product_id=int(input("Digite o ID do novo produto: ")),
+                brand=input("Digite a brand do produto: "),
+                price=float(input("Digite o preço do produto: ")),
+            )
+            times = add_product(btree, hash_table, new_product, INPUT_PATH)
+
+            results.append(
+                ["Add Product", "File", new_product.product_id, times["file"]]
+            )
+            results.append(
+                ["Add Product", "BTree", new_product.product_id, times["btree"]]
+            )
+            results.append(
+                [
+                    "Add Product",
+                    "HashTable",
+                    new_product.product_id,
+                    times["hash_table"],
+                ]
+            )
+
+            print(
+                f"Tempo para adicionar produto (ID {new_product.product_id}):\n"
+                f"Arquivo: {times['file']:.6f}s\n"
+                f"BTree: {times['btree']:.6f}s\n"
+                f"HashTable: {times['hash_table']:.6f}s"
+            )
 
         elif choice == "4":
-            # TODO: Remove products in btree and hash table
-            print("TODO: Remove products in btree and hash table")
-            # product_id = int(input("Digite o ID do produto a remover: "))
-            # _, btree_time = (
-            #     measure_execution_time(remove_from_btree, btree, product_id)
-            #     if btree
-            #     else (None, None)
-            # )
-            # _, hash_time = (
-            #     measure_execution_time(remove_from_hash, hash_table, product_id)
-            #     if hash_table
-            #     else (None, None)
-            # )
 
-            # if btree_time is not None:
-            #     results.append(["Remover Produto", "BTree", product_id, btree_time])
-            #     print(f"Produto removido da BTree em {btree_time:.6f} seconds.")
-            # if hash_time is not None:
-            #     results.append(["Remover Produto", "HashTable", product_id, hash_time])
-            #     print(f"Produto removido da HashTable em {hash_time:.6f} seconds.")
+            # if not (btree and hash_table):
+            #     print("Os índices precisam ser criados antes de remover produtos.")
+            #     continue
+
+            product_id = int(input("Digite o ID do produto a remover: "))
+
+            # Medindo o tempo para cada operação
+            times, success = remove_product(btree, hash_table, product_id)
+            if not success:
+                results.append(["Remove-error", "File", product_id, "Erro"])
+                continue
+
+            # Adicionando os tempos aos resultados
+            results.append(["Remove Product", "File", product_id, times["file"]])
+            results.append(["Remove Product", "BTree", product_id, times["btree"]])
+            results.append(
+                ["Remove Product", "HashTable", product_id, times["hash_table"]]
+            )
+
+            print(
+                f"Tempo para remover produto (ID {product_id}):\n"
+                f"Arquivo: {times['file']:.6f}s\n"
+                f"BTree: {times['btree']:.6f}s\n"
+                f"HashTable: {times['hash_table']:.6f}s"
+            )
 
         elif choice == "5":
             display_results_table(results)

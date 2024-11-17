@@ -12,12 +12,12 @@
   - [ ] Add
   - [ ] Remove
 
-- [ ] Search no arquivo
+- [x] Search no arquivo
 - [x] Implementação de count time
   - criação de indices (memoria e file)
 
-- [ ] Consultas (5) no arquivo e na memoria
-  - [ ] Montar tabela de comparacao para os 3 metodos 
+- [x] Consultas (5) no arquivo e na memoria
+  - [x] Montar tabela de comparacao para os 3 metodos 
     - Hash
     - Btree
     - File
@@ -28,7 +28,19 @@
     - Btree
     - File
 
-- [] Tratamento de erros nas queries caso nao encontre o resultado
+- [x] Tratamento de erros nas queries caso nao encontre o resultado
+
+
+Perguntas:
+- Como determino a ordem da árvore?
+- Como devemos fazer a recriação /ou modificacao dos indices ? (atualmente eu removo/crio um produto e recrio o arquivo de produtos )
+- A disposição dos dados está boa? Disponiveis no terminal
+
+
+Perguntas a se responder
+Arvore: BTree +
+Quantidade de elementos por nodo: 256 
+Estratégia Colisões: Encadeamento Direto
 
 ---
 
