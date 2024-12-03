@@ -73,7 +73,7 @@ def main():
             result_file, file_time = measure_execution_time(query_in_file, product_id)
             if result_file is None:
                 print("Produto não encontrado no arquivo.")
-                results.append(["Query-error", "File", product_id, "Erro"])
+                results.append(["Query - PNF", "File", product_id, file_time])
             else:
                 results.append(["Query", "File", product_id, file_time])
                 print(f"Query time in File: {file_time:.6f} seconds.")
@@ -85,7 +85,7 @@ def main():
                 )
                 if result_btree is None:
                     print("Produto não encontrado na BTree.")
-                    results.append(["Query-error", "BTree", product_id, "Erro"])
+                    results.append(["Query - PNF", "BTree", product_id, btree_time])
                 else:
                     results.append(["Query", "BTree", product_id, btree_time])
                     print(f"Query time in BTree: {btree_time:.6f} seconds.")
@@ -97,7 +97,14 @@ def main():
                 )
                 if result_hash is None:
                     print("Produto não encontrado na HashTable.")
-                    results.append(["Query-error", "HashTable", product_id, "Erro"])
+                    results.append(
+                        [
+                            "Query - PNF",
+                            "HashTable",
+                            product_id,
+                            hash_time,
+                        ]
+                    )
                 else:
                     results.append(["Query", "HashTable", product_id, hash_time])
                     print(f"Query time in HashTable: {hash_time:.6f} seconds.")
@@ -148,7 +155,7 @@ def main():
             # Medindo o tempo para cada operação
             times, success = remove_product(btree, hash_table, product_id)
             if not success:
-                results.append(["Remove-error", "File", product_id, "Erro"])
+                results.append(["Remove Product - PNF", "File", product_id, "Erro"])
                 continue
 
             # Adicionando os tempos aos resultados

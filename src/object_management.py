@@ -43,7 +43,7 @@ def load_hash(products: list[ProductEntry]):
     return hash_table
 
 
-def add_product(btree, hash_table, product, file_path):
+def add_product(btree: BTree, hash_table: HashTable, product, file_path):
     times = {}
 
     file_time = time.time()

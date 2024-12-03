@@ -1,16 +1,16 @@
 
 ### **Checklist**
 
-- [ ] Implementação Btree +
+- [x] Implementação Btree +
   - [x] Query + Search
-  - [ ] Add
-  - [ ] Remove
+  - [x] Add
+  - [x] Remove
 
 
-- [ ] Implementação Tabela Hash +
+- [x] Implementação Tabela Hash +
   - [x] Query + Search
-  - [ ] Add
-  - [ ] Remove
+  - [x] Add
+  - [x] Remove
 
 - [x] Search no arquivo
 - [x] Implementação de count time
@@ -32,9 +32,9 @@
 
 
 Perguntas:
-- Como determino a ordem da árvore?
+- Como determino a ordem da árvore? --> calculo baseado no tamanho da página
 - Como devemos fazer a recriação /ou modificacao dos indices ? (atualmente eu removo/crio um produto e recrio o arquivo de produtos )
-- A disposição dos dados está boa? Disponiveis no terminal
+- A disposição dos dados está boa? Disponiveis no terminal --> AJustar o log pro "erro" == n achou 
 
 
 Perguntas a se responder
