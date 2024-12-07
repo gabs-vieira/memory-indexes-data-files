@@ -111,9 +111,9 @@ def main():
 
         elif choice == "3":
 
-            # if not (btree and hash_table):
-            #     print("Os índices precisam ser criados antes de remover produtos.")
-            #     continue
+            if not (btree and hash_table):
+                print("Os índices precisam ser criados antes de remover produtos.")
+                continue
 
             new_product = ProductEntry(
                 product_id=int(input("Digite o ID do novo produto: ")),
@@ -146,16 +146,18 @@ def main():
 
         elif choice == "4":
 
-            # if not (btree and hash_table):
-            #     print("Os índices precisam ser criados antes de remover produtos.")
-            #     continue
+            if not (btree and hash_table):
+                print("Os índices precisam ser criados antes de remover produtos.")
+                continue
 
             product_id = int(input("Digite o ID do produto a remover: "))
 
             # Medindo o tempo para cada operação
             times, success = remove_product(btree, hash_table, product_id)
             if not success:
-                results.append(["Remove Product - PNF", "File", product_id, "Erro"])
+                results.append(
+                    ["Remove Product - PNF", "File", product_id, times["file"]]
+                )
                 continue
 
             # Adicionando os tempos aos resultados
